@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+    {% if current_user.is_authenticated %}
+      <main>
+        <p>Logged in as <strong>{{ current_user.username }}</strong></p>
+        <form action="{{ url_for('logout') }}" method="POST">
+          {{ logout_form.hidden_tag() }}
+          {{ logout_form.submit() }}
+        </form>
+      </main>
+    {% else %}
+      {% include "header.html" %}
+
+      <main>
+        <h1>Real-Time Chat Application</h1>
+        <p>Welcome to real-time chat application! This application uses Flask-SocketIO to handle the WebSockets, allowing for real-time messaging between users. SQLite is used as the database to store user information and chat history.</p>
+        <p>Sign up or login to start chatting!</p>
+      </main>
+
+      {% include "footer.html" %}
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+  {% include "header.html" %}
+
+  <main>
+    {% include "flashed_messages.html" %}
+    <form action="{{ request.path }}" method="post">
+      {{ login_form.hidden_tag() }}
+      {{ login_form.username.label }} {{ login_form.username() }}
+      {{ login_form.password.label }} {{ login_form.password() }}
+      {{ login_form.remember() }} {{ login_form.remember.label }}
+      {{ login_form.submit() }}
+    </form>
+  </main>
+
+  {% include "footer.html" %}
+{% endblock %}
