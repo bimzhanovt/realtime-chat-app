@@ -3,22 +3,17 @@ from realtime_chat.constants import *
 from flask_wtf import FlaskForm
 from wtforms.fields import StringField, PasswordField, BooleanField, \
     SubmitField
-from wtforms.validators import DataRequired, EqualTo, Length, Regexp
+from wtforms.validators import DataRequired, EqualTo
 
 class SignupForm(FlaskForm):
-    username = StringField('Username',
-        validators=[
-            Length(min=MIN_USERNAME_LENGTH, max=MAX_USERNAME_LENGTH),
-            Regexp(USERNAME_REGEXP, message=USERNAME_REGEXP_MESSAGE),
-        ],
-    )
+    username = StringField('Username', validators=USERNAME_VALIDATORS)
     password = PasswordField('Password',
         validators=[DataRequired(), EqualTo('confirm')])
     confirm = PasswordField('Repeat Password', validators=[DataRequired()])
     submit = SubmitField('Sign Up')
 
 class LoginForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired()])
+    username = StringField('Username', validators=USERNAME_VALIDATORS)
     password = PasswordField('Password', validators=[DataRequired()])
     remember = BooleanField('Remember')
     submit = SubmitField('Log In')
