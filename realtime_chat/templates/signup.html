@@ -4,6 +4,11 @@
   {% include "header.html" %}
 
   <main>
+    {% if signup_form.username.errors %}
+      {% for error in signup_form.username.errors %}
+        <span>{{ error }}</span>
+      {% endfor %}
+    {% endif %}
     {% include "flashed_messages.html" %}
     <form action="{{ request.path }}" method="post">
       {{ signup_form.hidden_tag() }}
