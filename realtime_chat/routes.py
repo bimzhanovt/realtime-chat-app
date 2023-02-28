@@ -42,8 +42,8 @@ def login():
             log_user_login(username)
             return redirect(url_for('home'))
         else:
-            flash('The username or password you entered is incorrect')
             log_user_unsuccessful_log_in(username)
+            flash('The username or password you entered is incorrect')
     return render_template('login.html', login_form=login_form)
 
 @app.route('/logout', methods=['POST'])
