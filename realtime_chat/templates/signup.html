@@ -12,6 +12,8 @@
     {% include "flashed_messages.html" %}
     <form action="{{ request.path }}" method="post">
       {{ signup_form.hidden_tag() }}
+      {{ signup_form.name.label }} {{ signup_form.name() }}
+      {{ signup_form.surname.label }} {{ signup_form.surname() }}
       {{ signup_form.username.label }} {{ signup_form.username() }}
       {{ signup_form.password.label }} {{ signup_form.password() }}
       {{ signup_form.confirm.label }} {{ signup_form.confirm() }}

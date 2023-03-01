@@ -6,6 +6,8 @@ from wtforms.fields import StringField, PasswordField, BooleanField, \
 from wtforms.validators import DataRequired, EqualTo
 
 class SignupForm(FlaskForm):
+    name = StringField('First name', validators=NAME_VALIDATORS)
+    surname = StringField('Last name', validators=NAME_VALIDATORS)
     username = StringField('Username', validators=USERNAME_VALIDATORS)
     password = PasswordField('Password',
         validators=[DataRequired(), EqualTo('confirm')])
