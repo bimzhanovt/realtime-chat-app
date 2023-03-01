@@ -17,7 +17,8 @@ class User(db.Model, UserMixin):
 
     def __init__(self, username, password):
         if User.query.filter_by(username=username).first():
-            raise ValueError
+            raise ValueError(
+                'There already exists a user with the same username')
         else:
             super().__init__(username=username,
                 password_hash=generate_password_hash(password))

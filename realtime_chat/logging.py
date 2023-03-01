@@ -7,28 +7,27 @@ logging.basicConfig(
     level=logging.INFO
 )
 
-def log_info(func):
-    def wrapper(*args, **kwargs):
-        message = func(*args, **kwargs)
-        logging.info(message)
-    return wrapper
+LOG_MESSAGES = {
+    'user_signup': 'User signed up.',
+    'user_unsuccessful_signup': 'Unsuccessful attempt to sign up.',
+    'user_login': 'User logged in.',
+    'user_unsuccessful_login': 'Unsuccessful attempt to log in.',
+    'user_logout': 'User logged out.',
+}
 
-@log_info
-def log_user_signup(username):
-    return f'User signed up. {{"username": "{username}"}}'
+def log_user_action(log_message, username):
+    """
+    Logs a user action with the specified log message and username.
 
-@log_info
-def log_user_unsuccessful_sign_up(username):
-    return f'Unsuccessful attempt to sign up. {{"username": "{username}"}}'
+    Parameters:
+    log_message (str): The log message to be logged. Use the keys in LOG_MESSAGES to ensure consistent log messages.
+    username (str): The username associated with the user action.
 
-@log_info
-def log_user_login(username):
-    return f'User logged in. {{"username": "{username}"}}'
+    Returns:
+    None
 
-@log_info
-def log_user_unsuccessful_log_in(username):
-    return f'Unsuccessful attempt to log in. {{"username": "{username}"}}'
-
-@log_info
-def log_user_logout(username):
-    return f'User logged out. {{"username": "{username}"}}'
+    Example:
+    >>> log_user_action(LOG_MESSAGES['user_signup'], 'John')
+    User signed up. {"username": "John"}
+    """
+    logging.info(log_message + f' {{"username": "{username}"}}')
