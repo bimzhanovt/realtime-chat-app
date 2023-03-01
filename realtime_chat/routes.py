@@ -15,6 +15,9 @@ def home():
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
+
     signup_form = SignupForm()
     if signup_form.validate_on_submit():
         username = signup_form.username.data
@@ -33,6 +36,9 @@ def signup():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
+
     login_form = LoginForm()
     if login_form.validate_on_submit():
         username = login_form.username.data
