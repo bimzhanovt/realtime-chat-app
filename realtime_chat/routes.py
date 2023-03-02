@@ -26,7 +26,7 @@ def signup():
             db.session.add(user)
             db.session.commit()
             log_user_action(LOG_MESSAGES['user_signup'], username)
-            login_user(user, remember=True)
+            login_user(user, remember=False)
             log_user_action(LOG_MESSAGES['user_login'], username)
             return redirect(url_for('home'))
         except ValueError as error:
@@ -44,7 +44,7 @@ def login():
         username = login_form.username.data
         user = User.query.filter_by(username=username).first()
         if user and user.check_password(login_form.password.data):
-            login_user(user, remember=login_form.remember.data)
+            login_user(user, remember=False)
             log_user_action(LOG_MESSAGES['user_login'], username)
             return redirect(url_for('home'))
         else:

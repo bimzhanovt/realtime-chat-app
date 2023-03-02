@@ -17,7 +17,6 @@ class SignupForm(FlaskForm):
 class LoginForm(FlaskForm):
     username = StringField('Username', validators=USERNAME_VALIDATORS)
     password = PasswordField('Password', validators=[DataRequired()])
-    remember = BooleanField('Remember')
     submit = SubmitField('Log In')
 
 class LogoutForm(FlaskForm):
