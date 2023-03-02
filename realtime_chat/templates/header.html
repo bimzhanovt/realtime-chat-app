@@ -2,10 +2,28 @@
   <a href="https://github.com/bimzhanovt/realtime-chat-app" target="_blank">
     <button>GitHub</button>
   </a>
-  <a href="{{ url_for('signup')}}">
-    <button>Sign Up</button>
-  </a>
-  <a href="{{ url_for('login') }}">
-    <button>Login</button>
-  </a>
+
+  {% if current_user.is_authenticated %}
+    <p style="margin: 0;">You are logged in as <strong>{{ current_user.username }}</strong></p>
+    <form action="{{ url_for('logout') }}" method="POST" class="form-button">
+      {{ logout_form.hidden_tag() }}
+      {{ logout_form.submit() }}
+    </form>
+  {% else %}
+    {% if request.path != url_for('home') %}
+      <a href="{{ url_for('home')}}">
+        <button>Home</button>
+      </a>
+    {% endif %}
+    {% if request.path != url_for('signup') %}
+      <a href="{{ url_for('signup')}}">
+        <button>Sign Up</button>
+      </a>
+    {% endif %}
+    {% if request.path != url_for('login') %}
+      <a href="{{ url_for('login') }}">
+        <button>Log In</button>
+      </a>
+    {% endif %}
+  {% endif %}
 </header>

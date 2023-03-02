@@ -1,7 +1,7 @@
 import secrets
 from flask import Flask
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='')
 app.config.from_mapping(
     SECRET_KEY=secrets.token_hex(16),
     SQLALCHEMY_DATABASE_URI='sqlite:///realtime_chat.db',
