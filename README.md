@@ -6,11 +6,11 @@ The application is built using Flask-SocketIO, a Flask extension that adds suppo
 Clone this repository and run following commands:
 
 ```
-$ python3 -m venv venv
-$ source venv/bin/activate
-$ pip install -e .
-$ python sqlite.py
-$ flask --app realtime-chat run
+$ python3 -m venv venv          # Creates a virtual environment
+$ source venv/bin/activate      # Activates the virtual environment
+$ pip install -e .              # Installs the dependencies
+$ python sqlite.py              # Initializes the database
+$ flask --app realtime-chat run # Runs the application
 ```
 
 ## License
