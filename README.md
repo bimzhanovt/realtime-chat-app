@@ -9,6 +9,7 @@ Clone this repository and run following commands:
 $ python3 -m venv venv
 $ source venv/bin/activate
 $ pip install -e .
+$ python sqlite.py
 $ flask --app realtime-chat run
 ```
 
