@@ -22,7 +22,9 @@ def signup():
     if signup_form.validate_on_submit():
         username = signup_form.username.data
         try:
-            user = User(username, signup_form.password.data)
+            user = User(username,
+                signup_form.name.data, signup_form.surname.data,
+                signup_form.password.data)
             log_user_action(LOG_MESSAGES['user_signup'], username)
             login_user(user, remember=False)
             log_user_action(LOG_MESSAGES['user_login'], username)

@@ -10,17 +10,21 @@ db.init_app(app)
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(MAX_NAME_LENGTH),
+        index=True, unique=False, nullable=False)
+    surname = db.Column(db.String(MAX_NAME_LENGTH),
+        index=True, unique=False, nullable=False)
     username = db.Column(db.String(MAX_USERNAME_LENGTH),
         index=True, unique=True, nullable=False)
     password_hash = db.Column(db.String(PASSWORD_HASH_LENGTH),
         index=False, unique=False, nullable=False)
 
-    def __init__(self, username, password):
+    def __init__(self, username, name, surname, password):
         if User.query.filter_by(username=username).first():
             raise ValueError(
                 'There already exists a user with the same username')
         else:
-            super().__init__(username=username,
+            super().__init__(username=username, name=name, surname=surname,
                 password_hash=generate_password_hash(password))
             try:
                 db.session.add(self)
