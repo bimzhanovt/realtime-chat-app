@@ -23,8 +23,6 @@ def signup():
         username = signup_form.username.data
         try:
             user = User(username, signup_form.password.data)
-            db.session.add(user)
-            db.session.commit()
             log_user_action(LOG_MESSAGES['user_signup'], username)
             login_user(user, remember=False)
             log_user_action(LOG_MESSAGES['user_login'], username)

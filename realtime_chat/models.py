@@ -22,6 +22,11 @@ class User(db.Model, UserMixin):
         else:
             super().__init__(username=username,
                 password_hash=generate_password_hash(password))
+            try:
+                db.session.add(self)
+                db.session.commit()
+            except:
+                db.session.rollback()
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
