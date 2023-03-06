@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+  {% include "header.html" %}
+
+  <main>
+    {% include "flashed_messages.html" %}
+    <h1>{{ chat.name }}</h1>
+    <form action="{{ url_for('add_chat_member', chat_id=chat.id) }}" method="post">
+      {{ add_chat_member_form.hidden_tag() }}
+      {{ add_chat_member_form.username.label }}
+      {{ add_chat_member_form.username() }}
+      {{ add_chat_member_form.submit() }}
+    </form>
+    <div class="chat-messages">
+      {% for message in chat.messages %}
+        <div class="message">
+          <p class="message-sender">{{ message.user_id }}</p>
+          <p class="message-text">{{ message.text }}</p>
+          <p class="message-time">{{ message.time }}</p>
+        </div>
+      {% endfor %}
+    </div>
+  </main>
+
+  {% include "footer.html" %}
+{% endblock %}

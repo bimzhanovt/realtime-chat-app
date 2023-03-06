@@ -21,3 +21,12 @@ class LoginForm(FlaskForm):
 
 class LogoutForm(FlaskForm):
     submit = SubmitField('Log out')
+
+class NewChatForm(FlaskForm):
+    name = StringField('Chat name', validators=CHAT_NAME_VALIDATORS)
+    submit = SubmitField('Create chat')
+
+class AddChatMemberForm(FlaskForm):
+    username = StringField('New member\'s username',
+        validators=USERNAME_VALIDATORS)
+    submit = SubmitField('Add new member')
