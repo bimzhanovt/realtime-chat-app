@@ -5,7 +5,7 @@ from flask_socketio import SocketIO
 
 app = Flask(__name__, static_url_path='')
 app.config.from_mapping(
-    SECRET_KEY=secrets.token_hex(16),
+    SECRET_KEY=secrets.token_hex(32),
     SQLALCHEMY_DATABASE_URI='sqlite:///realtime_chat.db',
     SQLALCHEMY_TRACK_MODIFICATIONS=False,
 )
