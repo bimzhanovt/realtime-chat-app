@@ -7,8 +7,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from realtime_chat import app
 from realtime_chat.constants import *
 
-db = SQLAlchemy()
-db.init_app(app)
+db = SQLAlchemy(app)
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
