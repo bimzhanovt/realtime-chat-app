@@ -1,9 +1,8 @@
-from realtime_chat.constants import *
-
 from flask_wtf import FlaskForm
-from wtforms.fields import StringField, PasswordField, BooleanField, \
-    SubmitField
-from wtforms.validators import DataRequired, EqualTo
+from wtforms.fields import *
+from wtforms.validators import *
+
+from realtime_chat.constants import *
 
 class SignupForm(FlaskForm):
     name = StringField('First name', validators=NAME_VALIDATORS)

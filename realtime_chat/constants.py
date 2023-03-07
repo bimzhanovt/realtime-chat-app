@@ -1,4 +1,4 @@
-from wtforms.validators import Length, Regexp
+from wtforms.validators import *
 
 MIN_USERNAME_LENGTH = 3
 MAX_USERNAME_LENGTH = 25
@@ -27,3 +27,6 @@ CHAT_NAME_VALIDATORS = [
 
 MIN_MESSAGE_TEXT_LENGTH = 1
 MAX_MESSAGE_TEXT_LENGTH = 500
+
+CHAT_NOT_FOUND_MESSAGE = {'error': 'Chat not found'}
+INVALID_DATA_MESSAGE = {'error': 'Invalid data'}

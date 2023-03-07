@@ -12,16 +12,54 @@
       {{ add_chat_member_form.username() }}
       {{ add_chat_member_form.submit() }}
     </form>
-    <div class="chat-messages">
-      {% for message in chat.messages %}
+    <div class="messages" id="messages">
+      {% for message in messages %}
         <div class="message">
-          <p class="message-sender">{{ message.user_id }}</p>
-          <p class="message-text">{{ message.text }}</p>
-          <p class="message-time">{{ message.time }}</p>
+          {{ message['username'] }}, {{ message['time'] }}:
+          {{ message['text'] }}
         </div>
       {% endfor %}
     </div>
+
+    <form id="message-form" action="">
+      <input id="message-text" autocomplete="off" />
+      <input type="submit" value="Send">
+    </form>
   </main>
 
   {% include "footer.html" %}
+
+  <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+  <script>
+    var socket = io();
+
+    var room= {{ chat.id }};
+
+    var messages = document.getElementById("messages");
+    var form = document.getElementById("message-form");
+    var input = document.getElementById("message-text");
+
+    socket.on("join", (roomName) => {
+      socket.join(roomName);
+      console.log(`Joined room ${roomName}`);
+    });
+
+    form.addEventListener('submit', function(evt) {
+      evt.preventDefault();
+      if (input.value) {
+        socket.emit("message", { room: room, text: input.value });
+        input.value = '';
+      }
+    });
+
+    socket.on('message', function(data) {
+      var item = document.createElement('div');
+      item.classList.add('message');
+      item.textContent = data.username + ', ' + data.time + ': ' + data.text;
+      messages.appendChild(item);
+      window.scrollTo(0, document.body.scrollHeight);
+    });
+
+    socket.emit("join", room);
+  </script>
 {% endblock %}

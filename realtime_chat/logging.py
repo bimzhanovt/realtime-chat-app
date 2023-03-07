@@ -1,6 +1,6 @@
-from realtime_chat import app
-
 import logging
+
+from realtime_chat import app
 
 logging.basicConfig(
     format=f'%(asctime)s %(levelname)s {app.name}: %(message)s',

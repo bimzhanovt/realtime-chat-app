@@ -1,10 +1,11 @@
+from datetime import datetime
+
+from flask_login import UserMixin
+from flask_sqlalchemy import SQLAlchemy
+from werkzeug.security import check_password_hash, generate_password_hash
+
 from realtime_chat import app
 from realtime_chat.constants import *
-
-from flask_sqlalchemy import SQLAlchemy
-from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import UserMixin
-from datetime import datetime
 
 db = SQLAlchemy()
 db.init_app(app)
@@ -69,10 +70,13 @@ class ChatMember(db.Model):
     chat_id = db.Column(db.Integer, db.ForeignKey('chat.id'))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
-    def __init__(self, chat_id, user_id):        
+    def __init__(self, chat_id, user_id):
         super().__init__(chat_id=chat_id, user_id=user_id)
 
-        member = ChatMember.query.filter_by(user_id=user_id).first()
+        member = ChatMember.query.filter_by(
+            chat_id=chat_id,
+            user_id=user_id,
+        ).first()
         if member:
             raise ValueError('This user is already in the chat')
 
@@ -92,10 +96,10 @@ class ChatMessage(db.Model):
         index=False, unique=False, nullable=False)
     time = db.Column(db.DateTime,
         index=False, unique=False, nullable=False,
-        default=datetime.utcnow)
+        default=datetime.now())
 
-    def __init__(self, chat_id, user_id, message):
-        super().__init__(chat_id=chat_id, user_id=user_id, message=message)
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
         db.session.add(self)
         try:
             db.session.commit()

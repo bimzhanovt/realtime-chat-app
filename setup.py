@@ -10,5 +10,6 @@ setup(
         'Flask-WTF==1.1.1',
         'WTForms==3.0.1',
         'Flask-Login==0.6.2',
+        'Flask-SocketIO==5.3.2',
     ],
 )

@@ -1,12 +1,12 @@
-from realtime_chat import app
-from realtime_chat.models import *
-from realtime_chat.forms import *
-from realtime_chat.login import *
-from realtime_chat.logging import *
+from flask import flash, redirect, render_template, request, url_for
+from flask_login import current_user, login_required, login_user, logout_user
 
-from flask import request, render_template, redirect, url_for, flash
-from flask_login import login_required, login_user, logout_user, \
-    current_user
+from realtime_chat import app
+from realtime_chat.forms import *
+from realtime_chat.logging import *
+from realtime_chat.login import *
+from realtime_chat.models import *
+
 
 @app.route('/')
 def home():
@@ -14,7 +14,6 @@ def home():
     new_chat_form = NewChatForm()
     if current_user.is_authenticated:
         chats=[Chat.query.get(chat.chat_id) for chat in current_user.chats]
-        print(chats)
         return render_template('index.html',
             logout_form=logout_form, new_chat_form=new_chat_form, chats=chats)
     else:
@@ -43,7 +42,14 @@ def chat(id):
         if is_chat_member:
             return render_template('chat.html',
                 logout_form=logout_form,
-                add_chat_member_form=add_chat_member_form, chat=chat)
+                add_chat_member_form=add_chat_member_form,
+                chat=chat,
+                messages=[{'username': User.query.get(message.user_id).username,
+                        'text': message.text,
+                        'time': message.time.strftime("%H:%M"),
+                    } for message in chat.messages
+                ]
+            )
         else:
             flash('You are not a member of this chat')
     else:
