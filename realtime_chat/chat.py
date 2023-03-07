@@ -21,7 +21,7 @@ def on_join(room):
     join_room(room)
 
 @socketio.on('message')
-def handle_message(message):
+def on_message(message):
     if not current_user.is_authenticated:
         return False
 
