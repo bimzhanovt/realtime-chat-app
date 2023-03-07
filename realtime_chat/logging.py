@@ -21,7 +21,7 @@ def log_user_action(log_message, username):
 
     Parameters:
     log_message (str): The log message to be logged. Use the keys in
-                       LOG_MESSAGES to ensure consistent log messages.
+                       `LOG_MESSAGES` to ensure consistent log messages.
     username (str): The username associated with the user action.
 
     Returns:

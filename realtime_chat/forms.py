@@ -25,7 +25,7 @@ class NewChatForm(FlaskForm):
     name = StringField('Chat name', validators=CHAT_NAME_VALIDATORS)
     submit = SubmitField('Create chat')
 
-class AddChatMemberForm(FlaskForm):
+class NewChatMemberForm(FlaskForm):
     username = StringField('New member\'s username',
         validators=USERNAME_VALIDATORS)
     submit = SubmitField('Add new member')

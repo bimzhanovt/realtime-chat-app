@@ -11,14 +11,11 @@ db = SQLAlchemy(app)
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(MAX_NAME_LENGTH),
-        index=True, unique=False, nullable=False)
-    surname = db.Column(db.String(MAX_NAME_LENGTH),
-        index=True, unique=False, nullable=False)
+    name = db.Column(db.String(MAX_NAME_LENGTH), index=True, nullable=False)
+    surname = db.Column(db.String(MAX_NAME_LENGTH), index=True, nullable=False)
     username = db.Column(db.String(MAX_USERNAME_LENGTH),
         index=True, unique=True, nullable=False)
-    password_hash = db.Column(db.String(PASSWORD_HASH_LENGTH),
-        index=False, unique=False, nullable=False)
+    password_hash = db.Column(db.String(PASSWORD_HASH_LENGTH), nullable=False)
 
     chats = db.relationship('ChatMember', backref='user', lazy='dynamic')
     messages = db.relationship('ChatMessage', backref='user', lazy='dynamic')
@@ -45,18 +42,18 @@ class User(db.Model, UserMixin):
 class Chat(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(MAX_CHAT_NAME_LENGTH),
-        index=True, unique=False, nullable=False)
+        index=True, nullable=False)
 
     members = db.relationship('ChatMember', backref='chat', lazy='dynamic',
         cascade = 'all, delete, delete-orphan')
     messages = db.relationship('ChatMessage', backref='chat', lazy='dynamic',
         cascade = 'all, delete, delete-orphan')
 
-    def __init__(self, name, user_id):
+    def __init__(self, name, creator_id):
         super().__init__(name=name)
         db.session.add(self)
 
-        first_member = ChatMember(chat_id=self.id, user_id=user_id)
+        first_member = ChatMember(chat_id=self.id, user_id=creator_id)
         self.members.append(first_member)
 
         try:
@@ -70,14 +67,10 @@ class ChatMember(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     def __init__(self, chat_id, user_id):
-        super().__init__(chat_id=chat_id, user_id=user_id)
-
-        member = ChatMember.query.filter_by(
-            chat_id=chat_id,
-            user_id=user_id,
-        ).first()
-        if member:
+        if ChatMember.query.filter_by(chat_id=chat_id, user_id=user_id).first():
             raise ValueError('This user is already in the chat')
+
+        super().__init__(chat_id=chat_id, user_id=user_id)
 
         db.session.add(self)
         try:
@@ -87,18 +80,13 @@ class ChatMember(db.Model):
 
 class ChatMessage(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    chat_id = db.Column(db.Integer, db.ForeignKey('chat.id'),
-        index=False, unique=False, nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'),
-        index=False, unique=False, nullable=False)
-    text = db.Column(db.String(MAX_MESSAGE_TEXT_LENGTH),
-        index=False, unique=False, nullable=False)
-    time = db.Column(db.DateTime,
-        index=False, unique=False, nullable=False,
-        default=datetime.now())
+    chat_id = db.Column(db.Integer, db.ForeignKey('chat.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    text = db.Column(db.String(MAX_MESSAGE_TEXT_LENGTH), nullable=False)
+    time = db.Column(db.DateTime, nullable=False, default=datetime.now())
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    def __init__(self, chat_id, user_id, text):
+        super().__init__(chat_id=chat_id, user_id=user_id, text=text)
         db.session.add(self)
         try:
             db.session.commit()
